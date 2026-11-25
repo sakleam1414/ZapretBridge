@@ -1,0 +1,29 @@
+﻿name: Publish Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: "ZapretBridge ${{ github.ref_name }}"
+          body: |
+            ### ZapretBridge ${{ github.ref_name }}
+            - В **Мониторе сети** внизу добавлен блок **«Кто жрёт интернет»**: показывает потребление интернета программами (Яндекс, игры, Steam, Discord, Telegram и др.) с фильтром категорий и точным замером TCP+UDP.
+            - Раздел **AmneziaWG** закрыт до установки и успешной проверки (`4/4`).
+            - Встроены сертификаты `certifi` для стабильной работы обновлений и загрузок с GitHub.
+          files: |
+            ZapretBridge.exe
+            ZapretBridge_Setup.exe
