@@ -1,0 +1,28 @@
+﻿name: Publish Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: "ZapretBridge ${{ github.ref_name }}"
+          body: |
+            ### ZapretBridge ${{ github.ref_name }}
+            - Раздел **AmneziaWG** закрыт до установки клиента и успешного прохождения проверки (`4/4`).
+            - Встроены корневые сертификаты `certifi` в панель и установщик `ZapretBridge_Setup.exe` для стабильной проверки обновлений и загрузок с GitHub без ошибок SSL.
+          files: |
+            ZapretBridge.exe
+            ZapretBridge_Setup.exe
