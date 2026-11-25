@@ -1,0 +1,30 @@
+name: Publish Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: "ZapretBridge ${{ github.ref_name }}"
+          body: |
+            ### ZapretBridge ${{ github.ref_name }}
+            - Исправлен запуск **Zapret (Flowseal)**, когда программа лежит в папке с пробелами или кириллицей (например `Рабочий стол`): пути к спискам и fake-файлам больше не разрываются, winws.exe получает аргументы точно как в оригинальных `.bat` Flowseal. Проверено на всех 22 стратегиях.
+            - Понятное сообщение об ошибке Zapret вместо обрывка командной строки.
+            - Установка **AmneziaWG**: msiexec вызывается напрямую без пересборки кавычек (окно справки «Установщик Windows» больше не появляется); если распаковка не удалась — автоматическая тихая установка MSI.
+            - Проверка AmneziaWG требует `wintun.dll` (в AmneziaWG 3.1.0 нет `tunnel.dll`).
+          files: |
+            ZapretBridge.exe
+            ZapretBridge_Setup.exe
