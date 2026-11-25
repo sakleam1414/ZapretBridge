@@ -1,0 +1,30 @@
+name: Publish Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: "ZapretBridge ${{ github.ref_name }}"
+          body: |
+            ### ZapretBridge ${{ github.ref_name }}
+            - Исправлена установка **AmneziaWG** (`msiexec /a`): устранена ошибка синтаксиса при наличии пробелов и кириллицы в пути к папке и ложное требование отсутствующей в AmneziaWG 3.1.0 библиотеки `tunnel.dll` (теперь корректно проверяется `wintun.dll`).
+            - Исправлен перезапуск PyInstaller `--onefile` при автообновлении, запуске после установки и перезапуске от Администратора (очистка `_PYI_*` переменных окружения).
+            - В **Мониторе сети** внизу добавлен блок **«Кто жрёт интернет»** (Яндекс, игры, программы Windows).
+            - Встроены сертификаты `certifi` для стабильной работы обновлений и загрузок с GitHub.
+          files: |
+            ZapretBridge.exe
+            ZapretBridge_Setup.exe
