@@ -1,0 +1,29 @@
+name: Publish Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: "ZapretBridge ${{ github.ref_name }}"
+          body: |
+            ### ZapretBridge ${{ github.ref_name }}
+            - Удалён отдельный пункт **«Маршрутизация (Steer)»** из левого бокового меню — теперь маршрутизация встроена прямо в нужные разделы.
+            - В разделе **VLESS и Подписки** добавлена кнопка **«🔀 Маршрутизация на свой»**, открывающая панель раздельной маршрутизации **только для VLESS** (Сервисы, Категории, Свои домены/подсети, `.exe`-программы, режим TUN / Сист. прокси, исключения и «✓ Сохранить и применить»).
+            - В **AmneziaWG** остаётся независимая панель **«🔀 Маршрутизация на свой»** (с приоритетом правил перед базовым VLESS) и кнопка **«⚡ Тест пинга»** на каждом туннеле.
+          files: |
+            ZapretBridge.exe
+            ZapretBridge_Setup.exe
