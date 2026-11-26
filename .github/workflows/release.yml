@@ -1,0 +1,29 @@
+name: Publish Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: "ZapretBridge ${{ github.ref_name }}"
+          body: |
+            ### ZapretBridge ${{ github.ref_name }}
+            - Исправлена проверка пинга DoH-серверов: переход на HTTP/2 (`h2`) с ALPN и кэшированный SSL-контекст — Cloudflare (`https://1.1.1.1/dns-query`), Quad9, Яндекс, DNS-AI, MALW и AdGuard теперь отвечают за реальные ~70–200 мс.
+            - Исправлено применение DNS и системного **DoH в Windows 11** (`EnableAutoDoh`, `Add/Set-DnsClientDohServerAddress`, `DohInterfaceSettings\Doh`), добавлен живой статус DNS/DoH сетевых адаптеров в карточке **Hosts и DoH** и пояснение про `Назначение IP: DHCP`.
+            - Исправлены адреса вторичных DNS (`ip2`) и пресеты `Bezmezhau` / `zapret.moe`, включено автообновление пресетов при обновлении программы.
+          files: |
+            ZapretBridge.exe
+            ZapretBridge_Setup.exe
