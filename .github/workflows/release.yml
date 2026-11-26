@@ -1,0 +1,30 @@
+name: Publish Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: "ZapretBridge ${{ github.ref_name }}"
+          body: |
+            ### ZapretBridge ${{ github.ref_name }}
+            - В разделе **AmneziaWG** убрана лишняя строка-подсказка под заголовком и добавлена кнопка **«🔀 Маршрутизация на свой»**.
+            - По нажатию открывается панель выбора **Сервисов**, **Категорий**, **Своих доменов/подсетей** и **Программ (.exe)** с сохранением и применением через выбранный AmneziaWG-туннель (`sing-box` / Steer).
+            - Исправлено обрезание длинных названий сервисов и категорий на плитках (текст больше не залезает на переключатель).
+            - Включены кнопки **«⚡ Тест пинга»** для туннелей AmneziaWG и исправления ярлыка / установщика.
+          files: |
+            ZapretBridge.exe
+            ZapretBridge_Setup.exe
