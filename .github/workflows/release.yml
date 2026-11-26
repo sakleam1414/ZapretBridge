@@ -1,0 +1,29 @@
+name: Publish Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: "ZapretBridge ${{ github.ref_name }}"
+          body: |
+            ### ZapretBridge ${{ github.ref_name }}
+            - Обновлены все иконки левого меню: цветные эмодзи заменены на аккуратные векторные контурные SVG-иконки (адаптируются под все 15 тем, активный пункт выделяется белым).
+            - Раздел **«Сеть»** разделён на две отдельные кнопки бокового меню: **Hosts** (быстрый доступ через файл hosts и базы GeoHide / malw.link) и **DNS over HTTPS** (проверка и 1-клик установка шифрованного DNS + DoH Windows 11).
+            - Добавлен раздельный цветовой индикатор активности в меню отдельно для **Hosts** и **DNS over HTTPS**.
+          files: |
+            ZapretBridge.exe
+            ZapretBridge_Setup.exe
