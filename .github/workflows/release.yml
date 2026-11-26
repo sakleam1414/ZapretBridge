@@ -1,0 +1,28 @@
+name: Publish Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: "ZapretBridge ${{ github.ref_name }}"
+          body: |
+            ### ZapretBridge ${{ github.ref_name }}
+            - Добавлена проверка задержки (пинга) для туннелей AmneziaWG (проверяется как ICMP до точки входа, так и реальное рукопожатие AWG через sing-box).
+            - Добавлены кнопки "⚡ Тест пинга" для каждого туннеля и общая кнопка "⚡ Тест пинга всех" в разделе AmneziaWG.
+          files: |
+            ZapretBridge.exe
+            ZapretBridge_Setup.exe
