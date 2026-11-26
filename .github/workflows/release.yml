@@ -1,0 +1,29 @@
+name: Publish Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: "ZapretBridge ${{ github.ref_name }}"
+          body: |
+            ### ZapretBridge ${{ github.ref_name }}
+            - Добавлен встроенный **TG WS Proxy (Telegram)** (`core/tg_ws_engine.py`): локальный SOCKS5-мост (`127.0.0.1:1080`) заворачивает MTProto-трафик в защищённый WebSocket (`wss://kws1..5.web.telegram.org/apiws`).
+            - Работает **без платных VPN/VLESS-серверов, без внешних `.exe` и без прав Администратора**, совместим с **Zapret** и **Steer**.
+            - Вкладка **«✈️ TG WS Proxy»** в разделе «Обход и Туннели» + статус на Дашборде: запуск/остановка, подключение Telegram в 1 клик (`tg://socks`), счётчики соединений и трафика, автоподбор рабочих edge-IP для **DC1–DC5**, свои IP на дата-центры, TCP-фолбэк и тест пинга `kws1–kws5`.
+          files: |
+            ZapretBridge.exe
+            ZapretBridge_Setup.exe
