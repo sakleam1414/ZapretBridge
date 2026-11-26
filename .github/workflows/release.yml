@@ -1,0 +1,30 @@
+name: Publish Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: "ZapretBridge ${{ github.ref_name }}"
+          body: |
+            ### ZapretBridge ${{ github.ref_name }}
+            - Удалён мини-плеер радио/музыки из бокового меню и настроек оформления.
+            - Полоса этапов **AmneziaWG** (`Закрыто → Установка → Проверка 4/4 → Открыто`) автоматически скрывается, когда клиент установлен и раздел открыт.
+            - Исправлено создание ярлыка на Рабочем столе (учитывается перенос Рабочего стола в OneDrive через `SHGetFolderPathW`, команды в PowerShell передаются в UTF-16LE `-EncodedCommand`).
+            - Включены исправления запуска **Zapret (Flowseal)** в путях с пробелами и кириллицей и корректной установки **AmneziaWG** (`msiexec` + `wintun.dll`).
+          files: |
+            ZapretBridge.exe
+            ZapretBridge_Setup.exe
