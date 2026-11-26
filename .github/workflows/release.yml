@@ -1,0 +1,29 @@
+name: Publish Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: "ZapretBridge ${{ github.ref_name }}"
+          body: |
+            ### ZapretBridge ${{ github.ref_name }}
+            - Добавлена тихая автопроверка обновлений при запуске программы (через ~4 сек после старта и далее раз в 6 часов).
+            - При выходе новой версии прямо в левой панели (над строкой **«Интернет: ...»**) автоматически появляется уведомление **`Доступно v...`** с кнопкой **«⬇ Скачать и обновить»** (если обновлений нет — плашка полностью скрыта).
+            - При нажатии **«⬇ Скачать и обновить»** прямо в боковой панели показывается живой прогресс скачивания (%), после чего программа корректно останавливает активные движки (`winws`, `sing-box`, `TG WS Proxy`), обновляет `ZapretBridge.exe` и перезапускается.
+          files: |
+            ZapretBridge.exe
+            ZapretBridge_Setup.exe
