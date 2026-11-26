@@ -1,0 +1,29 @@
+name: Publish Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: "ZapretBridge ${{ github.ref_name }}"
+          body: |
+            ### ZapretBridge ${{ github.ref_name }}
+            - Убрана лишняя кнопка **«Установить DNS в Windows»** из шапки блока DoH — теперь нажатие на любую карточку DoH-сервера (например **Cloudflare · 74 мс**) сразу в **1 клик** сохраняет выбор для **Steer / VLESS** и устанавливает DNS + системный **DoH Windows 11** (при запуске с правами Администратора).
+            - На самой карточке теперь честно отображается реальное состояние: зелёный статус **«🔒 Установлен в Windows»**, если этот DNS + DoH реально включён на адаптере, или **«Выбран для Steer · клик установит в Windows»** (например после **«Сбросить DNS (DHCP)»**).
+            - Исправлено сохранение настроек DoH (без лишних временных флагов в конфиге) и автоматический перезапуск работающего **Steer / VLESS** при переключении DoH-карточки.
+          files: |
+            ZapretBridge.exe
+            ZapretBridge_Setup.exe
